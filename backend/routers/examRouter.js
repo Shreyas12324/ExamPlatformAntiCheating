@@ -5,6 +5,7 @@ const { identifier } = require('../middlewares/identification');
 
 // Test management
 router.post('/create', identifier, examController.createTest); // Admin only
+router.post('/agent-test', identifier, examController.generateAgentTest); // User-facing
 router.get('/all', identifier, examController.getAllTests);
 router.get('/:testId', identifier, examController.getTestById);
 router.get('/:testId/questions', identifier, examController.getTestQuestions);

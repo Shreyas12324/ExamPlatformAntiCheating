@@ -7,6 +7,7 @@ from typing import Dict
 import logging
 from datetime import datetime
 from ultralytics import YOLO
+import torch
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -31,7 +32,43 @@ app.add_middleware(
 try:
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
-    model = YOLO('yolov8n.pt')
+    # YOLO weights may be a checkpoint that requires allowing the ultralytics DetectionModel
+    # class in torch's safe globals (PyTorch 2.6+ changed torch.load behavior).
+    # Prefer using the safe_globals context manager for a minimal allowlist scope.
+    try:
+        # Try to import the DetectionModel class and use torch's allowlist helpers
+        import ultralytics.nn.tasks as _ultra_tasks
+
+        # Preferred: use context manager safe_globals when available (PyTorch >= 2.6+)
+        if hasattr(torch.serialization, 'safe_globals'):
+            try:
+                with torch.serialization.safe_globals([_ultra_tasks.DetectionModel]):
+                    model = YOLO('yolov8n.pt')
+            except Exception:
+                # If context manager fails for any reason, fall back to add_safe_globals
+                if hasattr(torch.serialization, 'add_safe_globals'):
+                    torch.serialization.add_safe_globals([_ultra_tasks.DetectionModel])
+                    model = YOLO('yolov8n.pt')
+                else:
+                    model = YOLO('yolov8n.pt')
+
+        # Fallback: older or different torch API provides add_safe_globals
+        elif hasattr(torch.serialization, 'add_safe_globals'):
+            torch.serialization.add_safe_globals([_ultra_tasks.DetectionModel])
+            model = YOLO('yolov8n.pt')
+
+        else:
+            # Last resort: load normally (may fail with WeightsUnpickler error)
+            model = YOLO('yolov8n.pt')
+    except Exception as _e:
+        # If allowlisting or model load fails, log a helpful message and re-raise
+        logger.warning(f"Could not apply safe_globals/add_safe_globals for ultralytics: {_e}")
+        # Attempt a normal load as a final fallback. If this raises, it will be
+        # caught by the outer exception handler and the service will mark models as None.
+        try:
+            model = YOLO('yolov8n.pt')
+        except Exception as final_e:
+            raise final_e
     logger.info("OpenCV & YOLO models loaded successfully")
 except Exception as e:
     logger.error(f"Failed to load models: {e}")

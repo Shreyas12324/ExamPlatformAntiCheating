@@ -1,6 +1,57 @@
 const Test = require('../models/testModel');
 const Question = require('../models/questionModel');
 const UserProgress = require('../models/userProgressModel');
+const { generateQuestions } = require('../services/groqService');
+
+// Create a new test using agent (user-facing)
+exports.generateAgentTest = async (req, res) => {
+	try {
+		const { topic, title } = req.body;
+		if (!topic || !title) {
+			return res.status(400).json({ success: false, message: 'Topic and title are required.' });
+		}
+
+		// 1. Generate questions using Groq
+		const questions = await generateQuestions(topic, 5);
+		const totalMarks = questions.reduce((sum, q) => sum + q.marks, 0);
+
+		// 2. Create a new Test
+		const newTest = new Test({
+			title,
+			description: `An AI-generated test on ${topic}.`,
+			duration: 10, // Default duration
+			totalMarks,
+			passingMarks: Math.ceil(totalMarks * 0.6), // Default passing marks (60%)
+			isActive: true,
+			allowedAttempts: 1,
+			instructions: 'This is an AI-generated test. Answer all questions to the best of your ability.',
+			createdBy: req.user.userId, // Associate test with the user who created it
+		});
+
+		const savedTest = await newTest.save();
+
+		// 3. Create and link questions to the new test
+		const questionDocs = questions.map((q) => ({
+			...q,
+			testId: savedTest._id,
+		}));
+
+		const savedQuestions = await Question.insertMany(questionDocs);
+
+		// 4. Respond with the new test and questions (without answers)
+		const questionsForStudent = savedQuestions.map(({ correctAnswer, ...rest }) => rest);
+
+		res.status(201).json({
+			success: true,
+			message: 'Agent-generated test created successfully',
+			test: savedTest,
+			questions: questionsForStudent,
+		});
+	} catch (error) {
+		console.error('Error generating agent test:', error);
+		res.status(500).json({ success: false, message: 'Failed to generate agent test', error: error.message });
+	}
+};
 
 // Create a new test (Admin only)
 exports.createTest = async (req, res) => {

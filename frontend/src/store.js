@@ -94,6 +94,28 @@ export const useExamStore = create((set, get) => ({
 		}
 	},
 
+	generateAgentTest: async (topic) => {
+		set({ loading: true, error: null });
+		try {
+			const response = await axios.post(`${API_URL}/exam/agent-test`, {
+				topic,
+				title: `AI Test: ${topic}`,
+			});
+			const { test: newTest } = response.data;
+
+			// Add the new test to the existing list of tests
+			set((state) => ({
+				tests: [newTest, ...state.tests],
+				loading: false,
+			}));
+
+			return newTest; // Return the new test to allow navigation
+		} catch (error) {
+			set({ loading: false, error: error.response?.data?.message || 'Failed to generate test' });
+			throw error;
+		}
+	},
+
 	fetchTestDetails: async (testId) => {
 		set({ loading: true, error: null });
 		try {
