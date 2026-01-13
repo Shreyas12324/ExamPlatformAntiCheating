@@ -1,40 +1,64 @@
-#     Anti-Cheating Exam Platform
+# Anti-Cheating Exam Platform
 
 A secure online examination platform with AI-powered anti-cheating detection using ReactJS, Express.js, MongoDB, FastAPI, and Python.
 
-##   Features
+---
+
+## Features
 
 ### Frontend (ReactJS)
--   Clean and intuitive exam interface
--   Question navigation panel (left sidebar)
--   Timer with auto-submit on expiry
--   Webcam preview and monitoring (right sidebar)
--   Tab-switch and window-blur detection
--   Auto-save progress every 10 seconds
--   Real-time webcam capture and ML analysis
--   Visual progress tracking (answered/unanswered)
--   Responsive design with TailwindCSS
+- Clean and intuitive exam interface
+- Question navigation panel (left sidebar)
+- Timer with auto-submit on expiry
+- Webcam preview and monitoring (right sidebar)
+- Tab-switch and window-blur detection
+- Auto-save progress every 10 seconds
+- Real-time webcam capture and ML analysis
+- Visual progress tracking (answered/unanswered)
+- Responsive design with TailwindCSS
 
 ### Backend (Express + Node + MongoDB)
--   Complete authentication system (JWT-based)
--   User signup/signin with email verification
--   Test and question management
--   Progress tracking and auto-save
--   Answer submission and scoring
--   Cheating event logging
--   Integration with FastAPI ML service
+- Complete authentication system (JWT-based)
+- User signup/signin with email verification
+- Test and question management
+- Progress tracking and auto-save
+- Answer submission and scoring
+- Cheating event logging
+- Integration with FastAPI ML service
 
 ### ML Service (FastAPI + Python)
--   `/ml/check_face` endpoint for webcam analysis
--   Multi-person detection
--   Face position and orientation tracking
--   Eye gaze detection
--   Face size/distance monitoring
--   Cheating score calculation (0-100)
--   Severity classification (low/medium/high/critical)
--   Basic liveness detection
+- `/ml/check_face` endpoint for webcam analysis
+- Multi-person detection
+- Face position and orientation tracking
+- Eye gaze detection
+- Face size/distance monitoring
+- Cheating score calculation (0-100)
+- Severity classification (low/medium/high/critical)
+- Basic liveness detection
 
-## 📁 Project Structure
+### Interview Service
+AI-powered interview practice platform with real-time proctoring.
+
+**Backend** (FastAPI):
+- LLM-powered adaptive interviewer (Groq LLaMA 3.3 70B)
+- Role-specific question banks
+- Adaptive persona based on user communication style
+- Comprehensive scoring (Technical, Communication, Confidence)
+
+**React Frontend**:
+- Dual input modes (text/voice)
+- Text-to-speech for agent responses
+- Real-time webcam monitoring
+- Cheating event timeline
+
+**ML Service**:
+- YOLO-based detection for mobile devices and multiple faces
+- Tab switching detection
+- Alert system with toast notifications
+
+---
+
+## Project Structure
 
 ```
 exam-platform/
@@ -88,7 +112,9 @@ exam-platform/
     └── requirements.txt
 ```
 
-## 🔧 Setup Instructions
+---
+
+## Setup Instructions
 
 ### Prerequisites
 - Node.js (v18+ recommended)
@@ -156,7 +182,9 @@ npm run dev
 
 Frontend will run on **http://localhost:5173**
 
-## 🎮 Usage
+---
+
+## Usage
 
 ### Admin/Teacher Flow
 
@@ -184,7 +212,9 @@ Frontend will run on **http://localhost:5173**
 - **Gaze Away**: If face not centered → logged as "medium" (score: 30)
 - **Periodic Capture**: Webcam captured every 15 seconds + on question change
 
-## 📡 API Endpoints
+---
+
+## API Endpoints
 
 ### Authentication
 ```
@@ -221,7 +251,9 @@ POST /ml/check_face                 - Analyze webcam image
 POST /ml/check_liveness             - Liveness detection (basic)
 ```
 
-## 🧪 Sample Test Data
+---
+
+## Sample Test Data
 
 You can create a test using this API call (use Postman or similar):
 
@@ -264,7 +296,9 @@ POST /api/exam/add-questions
 }
 ```
 
-## 🔒 Security Features
+---
+
+## Security Features
 
 - JWT-based authentication
 - Password hashing with bcrypt
@@ -277,7 +311,9 @@ POST /api/exam/add-questions
 - Webcam monitoring
 - ML-based cheating detection
 
-## 🚀 Production Deployment
+---
+
+## Production Deployment
 
 ### Backend (Express)
 - Deploy on **Heroku**, **Railway**, **Render**, or **AWS EC2**
@@ -294,7 +330,9 @@ POST /api/exam/add-questions
 - Deploy on **Vercel**, **Netlify**, or **AWS S3 + CloudFront**
 - Update `VITE_API_URL` to production backend URL
 
-## 📈 Future Enhancements
+---
+
+## Future Enhancements
 
 - [ ] Advanced ML models (YOLO, MediaPipe, InsightFace)
 - [ ] Real-time admin dashboard with Socket.io
@@ -307,7 +345,9 @@ POST /api/exam/add-questions
 - [ ] Question bank management
 - [ ] Bulk question import (CSV/JSON)
 
-## 🐛 Troubleshooting
+---
+
+## Troubleshooting
 
 ### Webcam not working
 - Ensure browser has camera permission
@@ -324,7 +364,9 @@ POST /api/exam/add-questions
 - Check `MONGO_URI` in `.env`
 - Ensure network access (for Atlas)
 
-## 📄 License
+---
+
+## License
 
 MIT License - feel free to use for educational purposes.
 
