@@ -1,38 +1,38 @@
-# 🚀 Anti-Cheating Exam Platform
+#     Anti-Cheating Exam Platform
 
 A secure online examination platform with AI-powered anti-cheating detection using ReactJS, Express.js, MongoDB, FastAPI, and Python.
 
-## 🎯 Features
+##   Features
 
 ### Frontend (ReactJS)
-- ✅ Clean and intuitive exam interface
-- ✅ Question navigation panel (left sidebar)
-- ✅ Timer with auto-submit on expiry
-- ✅ Webcam preview and monitoring (right sidebar)
-- ✅ Tab-switch and window-blur detection
-- ✅ Auto-save progress every 10 seconds
-- ✅ Real-time webcam capture and ML analysis
-- ✅ Visual progress tracking (answered/unanswered)
-- ✅ Responsive design with TailwindCSS
+-   Clean and intuitive exam interface
+-   Question navigation panel (left sidebar)
+-   Timer with auto-submit on expiry
+-   Webcam preview and monitoring (right sidebar)
+-   Tab-switch and window-blur detection
+-   Auto-save progress every 10 seconds
+-   Real-time webcam capture and ML analysis
+-   Visual progress tracking (answered/unanswered)
+-   Responsive design with TailwindCSS
 
 ### Backend (Express + Node + MongoDB)
-- ✅ Complete authentication system (JWT-based)
-- ✅ User signup/signin with email verification
-- ✅ Test and question management
-- ✅ Progress tracking and auto-save
-- ✅ Answer submission and scoring
-- ✅ Cheating event logging
-- ✅ Integration with FastAPI ML service
+-   Complete authentication system (JWT-based)
+-   User signup/signin with email verification
+-   Test and question management
+-   Progress tracking and auto-save
+-   Answer submission and scoring
+-   Cheating event logging
+-   Integration with FastAPI ML service
 
 ### ML Service (FastAPI + Python)
-- ✅ `/ml/check_face` endpoint for webcam analysis
-- ✅ Multi-person detection
-- ✅ Face position and orientation tracking
-- ✅ Eye gaze detection
-- ✅ Face size/distance monitoring
-- ✅ Cheating score calculation (0-100)
-- ✅ Severity classification (low/medium/high/critical)
-- ✅ Basic liveness detection
+-   `/ml/check_face` endpoint for webcam analysis
+-   Multi-person detection
+-   Face position and orientation tracking
+-   Eye gaze detection
+-   Face size/distance monitoring
+-   Cheating score calculation (0-100)
+-   Severity classification (low/medium/high/critical)
+-   Basic liveness detection
 
 ## 📁 Project Structure
 
