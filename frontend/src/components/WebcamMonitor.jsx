@@ -33,36 +33,27 @@ export default function WebcamMonitor({ questionNumber }) {
 				const baseStatus = `Score: ${result.cheatingScore}/100`;
 				setStatus(result.mobile_detected ? `${baseStatus} | 📱 Phone detected` : baseStatus);
 				
-				// Show detailed toast based on severity and issues
-				if (result.severity === 'critical') {
+				// Only show toast for mobile detection and multiple faces
+				const details = result.details || {};
+				const numFaces = details.num_faces || 0;
+				const isMobile = result.mobile_detected || details.mobile_detected;
+				const isMultipleFaces = numFaces > 1;
+				
+				// Show toast only for critical events (mobile or multiple faces)
+				if (isMobile || isMultipleFaces) {
 					setCheatingAlert(result);
 					setTimeout(() => setCheatingAlert(null), 5000);
 					
-					// Show critical alert toast
-					const issues = result.details?.issues || [];
-					const message = issues.length > 0 
-						? `🚨 CRITICAL ALERT: ${issues.join(', ')}`
-						: '🚨 CRITICAL: Serious violation detected!';
-					
-					addToast(message, 'critical', 8000);
-					
-				} else if (result.severity === 'high') {
-					setCheatingAlert(result);
-					setTimeout(() => setCheatingAlert(null), 5000);
-					
-					const issues = result.details?.issues || [];
-					const message = issues.length > 0 
-						? `❌ HIGH ALERT: ${issues.join(', ')}`
-						: '❌ High severity violation detected!';
-					
-					addToast(message, 'error', 7000);
-					
-				} else if (result.severity === 'medium') {
-					const issues = result.details?.issues || [];
-					if (issues.length > 0) {
-						addToast(`⚠️ Warning: ${issues.join(', ')}`, 'warning', 5000);
+					let message;
+					if (isMobile) {
+						message = '🚨 CRITICAL ALERT: Mobile phone detected in frame!';
+					} else if (isMultipleFaces) {
+						message = `🚨 CRITICAL ALERT: Multiple people detected (${numFaces} faces)!`;
 					}
+					
+					addToast(message, 'critical', 1000);
 				}
+				// Other events (no face, looking away, etc.) are logged but no toast shown
 			} else {
 				setStatus('Monitoring...');
 			}

@@ -5,6 +5,10 @@
 npm-debug.log
 yarn-error.log
 
+# Nested virtual environments
+**/venv/
+**/.venv/
+
 # Python
 /venv/
 /backend/venv/
@@ -37,8 +41,21 @@ MANIFEST
 .env
 .env*.local
 
+# Project paper / report artifacts
+Aegis_IEEE_Paper.*
+Aegis_Paper March 2026.docx
+Capstone_Project_Report_Aegis*.docx
+majorSummary.docx
+aegis_architecture_mermaid.png
+mermaid-diagram (2).png
+**/*.docx
+
 # ML Models
 *.pt
+**/*.pt
+
+# Embedded legacy RAG example repo
+RAG/ask_multiple_pdfs_RAG/
 
 # IDE specific
 .vscode/

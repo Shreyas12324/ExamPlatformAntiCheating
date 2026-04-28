@@ -61,7 +61,7 @@ exports.signin = async (req, res) => {
 		if (!existingUser) {
 			return res
 				.status(401)
-				.json({ success: false, message: 'User does not exists!' });
+				.json({ success: false, message: 'User does not exist!' });
 		}
 		const result = await doHashValidation(password, existingUser.password);
 		if (!result) {

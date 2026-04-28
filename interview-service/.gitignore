@@ -72,7 +72,6 @@ build/
 
 # YOLO models (if large)
 *.pt
-!yolov8n.pt
 
 # Logs
 *.log
